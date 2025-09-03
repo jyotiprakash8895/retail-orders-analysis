@@ -1,5 +1,4 @@
-﻿-- 1.Which product categories generate the highest revenue, and how do they trend over time (monthly/quarterly)?
--- (Helps identify top-performing categories and seasonality)
+-- 1.Top Product Categories by Revenue (with Trends)
 
 SELECT 
 	category,
@@ -9,8 +8,7 @@ FROM retail_orders
 GROUP BY category,DATEFROMPARTS(YEAR(transaction_date), MONTH(transaction_date), 1)
 ORDER BY category,month_start
 
--- 2.Which items contribute most to sales within each category (Pareto / 80-20 analysis)?
--- (Business can focus on the core products driving most revenue)
+-- 2.Pareto (80-20) Analysis of Items within Categories
 
 WITH item_rev AS (
   SELECT category, item, SUM(total_spent) AS rev
@@ -26,8 +24,7 @@ FROM item_rev i
 JOIN category_tot c ON i.category = c.category
 ORDER BY i.category, i.rev DESC
 
--- 3.Do discounts increase revenue, or do they only shift customer purchases without increasing overall spend?
--- (Impact of discounts on revenue & margins)
+-- 3.Impact of Discounts
 SELECT
   discount_applied,
   COUNT(DISTINCT transaction_id) AS transactions,
@@ -37,8 +34,7 @@ SELECT
 FROM retail_orders
 GROUP BY discount_applied;
 
--- 4.Which locations generate the highest revenue, and how do customer buying patterns differ by region?
--- (Useful for regional strategy & marketing)
+-- 4.Regional / Location Analysis
 
 SELECT location,category,
 	SUM(total_spent) AS revenue,
@@ -47,8 +43,7 @@ FROM retail_orders
 GROUP BY location,category
 ORDER BY category,location,revenue DESC;
 
--- 5.How does payment method (cash, card, wallet) influence customer spending behavior?
--- (Can inform offers & partnerships with payment providers)
+-- 5.Payment Method Type
 
 SELECT customer_id,payment_method,
 	SUM(total_spent) AS total_spent
@@ -56,8 +51,7 @@ FROM retail_orders
 GROUP BY customer_id,payment_method
 ORDER BY customer_id,payment_method
 
--- 6.Who are the top customers by revenue, and what categories do they prefer?
--- (Basic customer segmentation (VIP / high-value customers)
+-- 6.Top Customers (VIPs)
 
 SELECT TOP 10 customer_id,
 	SUM(total_spent) AS revenue,
@@ -66,8 +60,7 @@ FROM retail_orders
 GROUP BY customer_id
 ORDER BY revenue DESC;
 
--- 7.What is the average basket size (items per transaction), and how does it vary with/without discounts?
--- (Shows how discounts impact quantity vs value)
+-- 7.Basket Size & Discounts
 
 WITH trx AS (
   SELECT transaction_id, discount_applied,
