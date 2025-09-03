@@ -1,0 +1,14 @@
+pandas
+sqlalchemy
+pyodbc
+jupyter
+🔹 Explanation
+pandas → For data cleaning & manipulation.
+
+sqlalchemy → For connecting Python to SQL Server.
+
+pyodbc → ODBC driver bridge for SQL Server.
+
+jupyter → To run your .ipynb notebook.
+
+👉 If you add visualizations later (e.g., matplotlib, seaborn, plotly), you can include them too.
